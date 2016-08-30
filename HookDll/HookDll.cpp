@@ -6,7 +6,7 @@
 #include <easyhook.h>
 
 using namespace test;
-//using namespace System;
+using namespace System;
 using namespace System::Diagnostics;
 
 typedef int (CALLBACK* pfnNativeDll)(void);
