@@ -36,6 +36,8 @@ class HOOKDLL_API CHookDll {
 public:
 	CHookDll(void);
 	// TODO: add your methods here.
+	int test1(void);
+	ULONG test2(void);
 };
 
 extern HOOKDLL_API int nHookDll;

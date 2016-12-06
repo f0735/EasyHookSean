@@ -22,10 +22,16 @@ HOOKDLL_API int fnHookDll(void)
 {
 	printf("Hello World, I'm Hook Dll!\n");
 
+	CHookDll aa;
+
 	if (tmp)
 	{
 		tmp();
 	}
+
+	int a1 = aa.test1();
+	int a2 = aa.test2();
+	int a3 = a2 - a1;
 
     return 43;
 }
@@ -55,7 +61,7 @@ HRESULT WINAPI D3D11CreateDeviceHook
 	_Out_opt_ D3D_FEATURE_LEVEL* pFeatureLevel,
 	_COM_Outptr_opt_ ID3D11DeviceContext** ppImmediateContext)
 {
-	printf("D3D11CreateDeviceHook\n");
+	OutputDebugStringA(__FUNCTION__);
 
 	Beep(500, 500);
 
@@ -77,6 +83,16 @@ HRESULT WINAPI D3D11CreateDeviceHook
 CHookDll::CHookDll()
 {
     return;
+}
+
+int CHookDll::test1()
+{
+	return 1;
+}
+
+ULONG CHookDll::test2(void)
+{
+	return 2;
 }
 
 extern "C" HOOKDLL_API void NativeInjectionEntryPoint(REMOTE_ENTRY_INFO* inRemoteInfo)
@@ -117,6 +133,8 @@ extern "C" HOOKDLL_API void NativeInjectionEntryPoint(REMOTE_ENTRY_INFO* inRemot
 		return;
 	}
 	
+	DbgAttachDebugger();
+
 	NTSTATUS result = LhInstallHook(
 		(void*)pfnCreateDXGIFactory,
 		CreateDXGIFactoryHook,
@@ -170,9 +188,7 @@ void Main::Run(RemoteHooking::IContext ^InContext, String ^InChannelName)
 		(System::IntPtr)nullptr);
 
 	array<Int32, 1>^ aa = { 0 };
-
 	lhtest->ThreadACL->SetExclusiveACL(aa);
-
 	RhWakeUpProcess();
 
 	return;
